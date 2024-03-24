@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Unihockey Reminder Service Contract
+  description: |-
+    An API to handle the reminders
+  version: 1.0-SNAPSHOT
+tags:
+  - name: fixture
+  - name: reminder
+
+paths:
+  /fixture/initialize:
+    get:
+      tags:
+        - fixture
+      summary: Initialize data
+      description: Initialize the gruppen, hallen and trainings with standard-data
+      operationId: initializeData
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoDto'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+  /v1/personen:
+    post:
+      tags:
+        - reminder
+      summary: Add personen
+      description: Adds a list of personen if they don't exist yet
+      operationId: addPersonen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonDto'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoDto'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+  /v1/einsaetze:
+    post:
+      tags:
+        - reminder
+      summary: Adds einsatze
+      description: Adds a list of einsatze. Differentiated by type.
+      operationId: addEinsaetze
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EinsaetzeDto'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoDto'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+    get:
+      tags:
+        - reminder
+      summary: Gets einsatze
+      description: Gets all Einsaetze. For testing reasons.
+      operationId: getEinsaetze
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EinsaetzeDto'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+components:
+  schemas:
+    InfoDto:
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorDto:
+      type: object
+      properties:
+        message:
+          type: string
+    EinsaetzeDto:
+      type: object
+      properties:
+        matchEinsatze:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchEinsatzDto'
+        trainingsEinsaetze:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainingsEinsatzDto'
+        helferEinsaetze:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelferEinsatzDto'
+    MatchEinsatzDto:
+      type: object
+      properties:
+        datum:
+          type: string
+        zeitpunkt:
+          type: string
+        ort:
+          type: string
+        gruppe:
+          $ref: '#/components/schemas/GruppeDto'
+        person:
+          $ref: '#/components/schemas/PersonDto'
+    TrainingsEinsatzDto:
+      type: object
+      properties:
+        datum:
+          type: string
+        training:
+          $ref: '#/components/schemas/TrainingDto'
+        person:
+          $ref: '#/components/schemas/PersonDto'
+    HelferEinsatzDto:
+      type: object
+      properties:
+        helfertermin:
+          $ref: '#/components/schemas/HelferterminDto'
+        person:
+          $ref: '#/components/schemas/PersonDto'
+    TrainingDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        gruppe:
+          $ref: '#/components/schemas/GruppeDto'
+        zeitpunkt:
+          type: string
+        halle:
+          $ref: '#/components/schemas/HalleDto'
+    GruppeDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    HalleDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    PersonDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        vorname:
+          type: string
+        nachname:
+          type: string
+        telefonnummer:
+          type: string
+        mailadresse:
+          type: string
+    HelferterminDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        datum:
+          type: string
+        zeitpunkt:
+          type: string
+        ort:
+          type: string

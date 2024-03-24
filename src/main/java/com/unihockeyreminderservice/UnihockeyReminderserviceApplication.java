@@ -10,4 +10,11 @@ public class UnihockeyReminderserviceApplication {
         SpringApplication.run(UnihockeyReminderserviceApplication.class, args);
     }
 
+
+    // TODO: Setup PostgreSQL DB in docker
+    // TODO: Mindeste erforderliche Daten ausarbeiten (Personen, Training, Match)
+    // TODO: Scheduler aufsetzen
+    // TODO: Post-Funktion einbauen
+    // TODO: Mail versenden
+
 }
